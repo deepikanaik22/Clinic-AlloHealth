@@ -17,6 +17,8 @@ export interface Doctor {
     day: string;
     slots: string[];
   }[];
+  rating: number;
+  reviews: number;
 }
 
 export interface Appointment {

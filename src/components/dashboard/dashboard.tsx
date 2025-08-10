@@ -8,6 +8,7 @@ import {
   Bot,
   LogOut,
   Settings,
+  Award,
 } from "lucide-react";
 import {
   SidebarProvider,
@@ -27,8 +28,9 @@ import { OverviewCards } from "../overview/cards";
 import { QueueManager } from "../queue/queue-manager";
 import { AppointmentScheduler } from "../appointments/appointment-scheduler";
 import { WaitTimePredictor } from "../wait-time/wait-time-predictor";
+import { DoctorRankings } from "../rankings/doctor-rankings";
 
-type View = "overview" | "queue" | "appointments" | "predictor";
+type View = "overview" | "queue" | "appointments" | "predictor" | "rankings";
 
 export function Dashboard() {
   const [activeView, setActiveView] = React.useState<View>("overview");
@@ -38,6 +40,7 @@ export function Dashboard() {
     queue: "Patient Queue Management",
     appointments: "Appointment Scheduler",
     predictor: "Wait Time Predictor",
+    rankings: "Doctor Rankings",
   };
 
   const renderView = () => {
@@ -50,6 +53,8 @@ export function Dashboard() {
         return <AppointmentScheduler />;
       case "predictor":
         return <WaitTimePredictor />;
+      case "rankings":
+        return <DoctorRankings />;
       default:
         return <OverviewCards />;
     }
@@ -104,6 +109,16 @@ export function Dashboard() {
               >
                 <Bot />
                 <span>AI Predictor</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                onClick={() => setActiveView("rankings")}
+                isActive={activeView === "rankings"}
+                tooltip="Doctor Rankings"
+              >
+                <Award />
+                <span>Rankings</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>

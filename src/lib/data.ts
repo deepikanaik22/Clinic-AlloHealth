@@ -17,6 +17,8 @@ export const mockDoctors: Doctor[] = [
       { day: 'Monday', slots: ['09:00', '11:00', '14:00'] },
       { day: 'Wednesday', slots: ['10:00', '12:00', '15:00'] },
     ],
+    rating: 4.9,
+    reviews: 124,
   },
   {
     id: 2,
@@ -26,6 +28,8 @@ export const mockDoctors: Doctor[] = [
       { day: 'Tuesday', slots: ['09:30', '11:30', '14:30'] },
       { day: 'Thursday', slots: ['10:30', '12:30', '15:30'] },
     ],
+    rating: 4.8,
+    reviews: 98,
   },
   {
     id: 3,
@@ -35,6 +39,8 @@ export const mockDoctors: Doctor[] = [
       { day: 'Monday', slots: ['13:00', '16:00'] },
       { day: 'Friday', slots: ['09:00', '11:00', '14:00'] },
     ],
+    rating: 4.7,
+    reviews: 152,
   },
 ];
 
