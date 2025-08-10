@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { predictPatientWaitTime, PatientWaitTimeInput, PatientWaitTimeOutput } from "@/ai/flows/patient-wait-time-prediction";
+import { predictPatientWaitTime, PatientWaitTimeInput, PatientWaitTimeOutput } from "@/server/flows/patient-wait-time-prediction";
 import { mockDoctors } from "@/lib/data";
 import { Loader2, Wand2 } from "lucide-react";
 
@@ -185,7 +185,7 @@ export function WaitTimePredictor() {
                 </Button>
 
                 {prediction && (
-                    <Card className="w-full bg-accent/30">
+                    <Card className="w-full bg-secondary">
                         <CardHeader>
                             <CardTitle>Prediction Result</CardTitle>
                         </CardHeader>
