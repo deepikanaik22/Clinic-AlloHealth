@@ -31,11 +31,24 @@ import { AppointmentScheduler } from "../appointments/appointment-scheduler";
 import { WaitTimePredictor } from "../wait-time/wait-time-predictor";
 import { DoctorRankings } from "../rankings/doctor-rankings";
 import { HealthFeed } from "../health-feed/health-feed";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { useToast } from "@/hooks/use-toast";
 
 type View = "overview" | "queue" | "appointments" | "predictor" | "rankings" | "feed";
 
 export function Dashboard() {
   const [activeView, setActiveView] = React.useState<View>("overview");
+  const { toast } = useToast();
 
   const viewTitles: Record<View, string> = {
     overview: "Dashboard Overview",
@@ -63,6 +76,15 @@ export function Dashboard() {
       default:
         return <OverviewCards />;
     }
+  };
+
+  const handleLogout = () => {
+    // In a real app, this would handle the logout logic (e.g., clearing session, redirecting).
+    console.log("User logged out.");
+    toast({
+      title: "Logged Out",
+      description: "You have been successfully logged out.",
+    });
   };
 
   return (
@@ -128,7 +150,7 @@ export function Dashboard() {
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton
-                onClick={() => setActiveView("feed")}
+                onClick={() => setActiveVew("feed")}
                 isActive={activeView === "feed"}
                 tooltip="Health Feed"
               >
@@ -147,18 +169,34 @@ export function Dashboard() {
                 </SidebarMenuButton>
             </SidebarMenuItem>
              <SidebarMenuItem>
-                <SidebarMenuButton>
-                    <div className="flex w-full items-center justify-between">
-                        <div className="flex items-center gap-2">
-                             <Avatar className="h-7 w-7">
-                                <AvatarImage src="https://placehold.co/40x40.png" alt="User" data-ai-hint="woman smiling" />
-                                <AvatarFallback>FD</AvatarFallback>
-                            </Avatar>
-                            <span className="text-sm font-medium">Front Desk</span>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <SidebarMenuButton>
+                        <div className="flex w-full items-center justify-between">
+                            <div className="flex items-center gap-2">
+                                <Avatar className="h-7 w-7">
+                                    <AvatarImage src="https://placehold.co/40x40.png" alt="User" data-ai-hint="woman smiling" />
+                                    <AvatarFallback>FD</AvatarFallback>
+                                </Avatar>
+                                <span className="text-sm font-medium">Front Desk</span>
+                            </div>
+                            <LogOut className="size-4" />
                         </div>
-                        <LogOut className="size-4" />
-                    </div>
-                </SidebarMenuButton>
+                    </SidebarMenuButton>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you sure you want to log out?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        You will be returned to the login page.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={handleLogout}>Log Out</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
             </SidebarMenuItem>
            </SidebarMenu>
         </SidebarFooter>
