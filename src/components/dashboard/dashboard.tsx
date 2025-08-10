@@ -9,6 +9,7 @@ import {
   LogOut,
   Settings,
   Award,
+  BookHeart,
 } from "lucide-react";
 import {
   SidebarProvider,
@@ -29,8 +30,9 @@ import { QueueManager } from "../queue/queue-manager";
 import { AppointmentScheduler } from "../appointments/appointment-scheduler";
 import { WaitTimePredictor } from "../wait-time/wait-time-predictor";
 import { DoctorRankings } from "../rankings/doctor-rankings";
+import { HealthFeed } from "../health-feed/health-feed";
 
-type View = "overview" | "queue" | "appointments" | "predictor" | "rankings";
+type View = "overview" | "queue" | "appointments" | "predictor" | "rankings" | "feed";
 
 export function Dashboard() {
   const [activeView, setActiveView] = React.useState<View>("overview");
@@ -41,6 +43,7 @@ export function Dashboard() {
     appointments: "Appointment Scheduler",
     predictor: "Wait Time Predictor",
     rankings: "Doctor Rankings",
+    feed: "Today's Health Feed",
   };
 
   const renderView = () => {
@@ -55,6 +58,8 @@ export function Dashboard() {
         return <WaitTimePredictor />;
       case "rankings":
         return <DoctorRankings />;
+      case "feed":
+        return <HealthFeed />;
       default:
         return <OverviewCards />;
     }
@@ -119,6 +124,16 @@ export function Dashboard() {
               >
                 <Award />
                 <span>Rankings</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                onClick={() => setActiveView("feed")}
+                isActive={activeView === "feed"}
+                tooltip="Health Feed"
+              >
+                <BookHeart />
+                <span>Health Feed</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
