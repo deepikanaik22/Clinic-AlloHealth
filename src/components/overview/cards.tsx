@@ -6,8 +6,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Users, CalendarCheck, Stethoscope, Clock, Smile, DollarSign } from "lucide-react";
+import { Users, CalendarCheck, Stethoscope, Clock, Smile, Star } from "lucide-react";
 import { mockPatients, mockAppointments, mockDoctors } from "@/lib/data";
+import { Button } from "../ui/button";
 
 export function OverviewCards() {
   const patientsInQueue = mockPatients.filter(
@@ -23,7 +24,6 @@ export function OverviewCards() {
   
   const averageWaitTime = 25; // Mock data
   const patientSatisfaction = "92%"; // Mock data
-  const revenueToday = "$12,450"; // Mock data
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -95,14 +95,14 @@ export function OverviewCards() {
       </Card>
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Revenue Today</CardTitle>
-          <DollarSign className="h-4 w-4 text-muted-foreground" />
+          <CardTitle className="text-sm font-medium">Feedback</CardTitle>
+          <Star className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{revenueToday}</div>
+        <CardContent className="flex flex-col items-start gap-4">
           <p className="text-xs text-muted-foreground">
-            Gross revenue from appointments and services.
+            Help us improve by sharing your thoughts.
           </p>
+           <Button>Give Feedback</Button>
         </CardContent>
       </Card>
     </div>
