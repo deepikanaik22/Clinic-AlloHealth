@@ -45,7 +45,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "../ui/button";
-import { mockPatients } from "@/lib/data";
+import { mockPatients, mockDoctors } from "@/lib/data";
 import type { Patient } from "@/lib/types";
 
 type View =
@@ -63,14 +63,14 @@ export function Dashboard() {
   const { toast } = useToast();
   const [patients, setPatients] = React.useState<Patient[]>(mockPatients);
   
-  const addPatient = (name: string) => {
+  const addPatient = (name: string, doctor: string) => {
     const newPatient: Patient = {
       id: patients.length + 1,
       name,
       queueNumber: Math.max(...patients.map(p => p.queueNumber), 0) + 1,
       status: "Waiting",
       arrivalTime: new Date(),
-      doctor: "Unassigned",
+      doctor,
     };
     setPatients((prev) => [newPatient, ...prev]);
   };
@@ -94,7 +94,7 @@ export function Dashboard() {
       case "overview":
         return <OverviewCards patients={patients} />;
       case "queue":
-        return <QueueManager patients={patients} addPatient={addPatient} updatePatientStatus={updatePatientStatus} />;
+        return <QueueManager patients={patients} addPatient={addPatient} updatePatientStatus={updatePatientStatus} doctors={mockDoctors} />;
       case "appointments":
         return <AppointmentScheduler />;
       case "predictor":

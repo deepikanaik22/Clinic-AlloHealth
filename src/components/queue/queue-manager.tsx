@@ -5,15 +5,16 @@ import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import { QueueTable } from "./queue-table";
 import { AddPatientDialog } from "./add-patient-dialog";
-import type { Patient } from "@/lib/types";
+import type { Patient, Doctor } from "@/lib/types";
 
 type QueueManagerProps = {
   patients: Patient[];
-  addPatient: (name: string) => void;
+  addPatient: (name: string, doctor: string) => void;
   updatePatientStatus: (patientId: number, status: Patient['status']) => void;
+  doctors: Doctor[];
 };
 
-export function QueueManager({ patients, addPatient, updatePatientStatus }: QueueManagerProps) {
+export function QueueManager({ patients, addPatient, updatePatientStatus, doctors }: QueueManagerProps) {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
 
   return (
@@ -28,6 +29,7 @@ export function QueueManager({ patients, addPatient, updatePatientStatus }: Queu
         isOpen={isDialogOpen}
         onOpenChange={setIsDialogOpen}
         onAddPatient={addPatient}
+        doctors={doctors}
       />
     </div>
   );
