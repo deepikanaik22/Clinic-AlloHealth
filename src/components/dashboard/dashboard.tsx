@@ -31,6 +31,7 @@ import { AppointmentScheduler } from "../appointments/appointment-scheduler";
 import { WaitTimePredictor } from "../wait-time/wait-time-predictor";
 import { DoctorRankings } from "../rankings/doctor-rankings";
 import { HealthFeed } from "../health-feed/health-feed";
+import { SettingsPage } from "../settings/settings-page";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -44,7 +45,14 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 
-type View = "overview" | "queue" | "appointments" | "predictor" | "rankings" | "feed";
+type View =
+  | "overview"
+  | "queue"
+  | "appointments"
+  | "predictor"
+  | "rankings"
+  | "feed"
+  | "settings";
 
 export function Dashboard() {
   const [activeView, setActiveView] = React.useState<View>("overview");
@@ -57,6 +65,7 @@ export function Dashboard() {
     predictor: "Wait Time Predictor",
     rankings: "Doctor Rankings",
     feed: "Today's Health Feed",
+    settings: "Settings",
   };
 
   const renderView = () => {
@@ -73,6 +82,8 @@ export function Dashboard() {
         return <DoctorRankings />;
       case "feed":
         return <HealthFeed />;
+      case "settings":
+        return <SettingsPage />;
       default:
         return <OverviewCards />;
     }
@@ -161,44 +172,56 @@ export function Dashboard() {
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter>
-           <SidebarMenu>
+          <SidebarMenu>
             <SidebarMenuItem>
-                <SidebarMenuButton tooltip="Settings">
-                    <Settings />
-                    <span>Settings</span>
-                </SidebarMenuButton>
+              <SidebarMenuButton
+                tooltip="Settings"
+                onClick={() => setActiveView("settings")}
+                isActive={activeView === "settings"}
+              >
+                <Settings />
+                <span>Settings</span>
+              </SidebarMenuButton>
             </SidebarMenuItem>
-             <SidebarMenuItem>
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <SidebarMenuButton>
-                        <div className="flex w-full items-center justify-between">
-                            <div className="flex items-center gap-2">
-                                <Avatar className="h-7 w-7">
-                                    <AvatarImage src="https://placehold.co/40x40.png" alt="User" data-ai-hint="woman smiling" />
-                                    <AvatarFallback>FD</AvatarFallback>
-                                </Avatar>
-                                <span className="text-sm font-medium">Front Desk</span>
-                            </div>
-                            <LogOut className="size-4" />
-                        </div>
-                    </SidebarMenuButton>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Are you sure you want to log out?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        You will be returned to the login page.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={handleLogout}>Log Out</AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+            <SidebarMenuItem>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <SidebarMenuButton>
+                    <div className="flex w-full items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Avatar className="h-7 w-7">
+                          <AvatarImage
+                            src="https://placehold.co/40x40.png"
+                            alt="User"
+                            data-ai-hint="woman smiling"
+                          />
+                          <AvatarFallback>FD</AvatarFallback>
+                        </Avatar>
+                        <span className="text-sm font-medium">Front Desk</span>
+                      </div>
+                      <LogOut className="size-4" />
+                    </div>
+                  </SidebarMenuButton>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you sure you want to log out?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      You will be returned to the login page.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleLogout}>
+                      Log Out
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </SidebarMenuItem>
-           </SidebarMenu>
+          </SidebarMenu>
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
