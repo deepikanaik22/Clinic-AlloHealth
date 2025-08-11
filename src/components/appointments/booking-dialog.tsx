@@ -125,6 +125,7 @@ export function BookingDialog({
                     mode="single"
                     selected={date}
                     onSelect={setDate}
+                    disabled={{ before: new Date() }}
                     initialFocus
                   />
                 </PopoverContent>
