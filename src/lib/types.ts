@@ -1,5 +1,6 @@
 export type PatientStatus = 'Waiting' | 'With Doctor' | 'Completed' | 'Cancelled';
 export type PatientPriority = 'Normal' | 'Urgent';
+export type PaymentStatus = 'Paid' | 'Pending';
 
 export interface Patient {
   id: number;
@@ -9,6 +10,7 @@ export interface Patient {
   arrivalTime: Date;
   doctor: string;
   priority: PatientPriority;
+  paymentStatus: PaymentStatus;
 }
 
 export interface Doctor {

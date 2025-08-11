@@ -48,7 +48,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "../ui/button";
 import { mockPatients, mockDoctors, mockAppointments } from "@/lib/data";
-import type { Patient, PatientPriority } from "@/lib/types";
+import type { Patient, PatientPriority, PaymentStatus } from "@/lib/types";
 
 type View =
   | "overview"
@@ -75,6 +75,7 @@ export function Dashboard() {
       arrivalTime: new Date(),
       doctor,
       priority,
+      paymentStatus: 'Pending',
     };
     setPatients((prev) => [...prev, newPatient]);
   };
@@ -89,6 +90,16 @@ export function Dashboard() {
       title: "Priority Updated",
       description: `Patient's priority has been set to ${priority}.`,
     });
+  };
+
+  const updatePatientPaymentStatus = (patientId: number, paymentStatus: PaymentStatus) => {
+    setPatients(prev => prev.map(p => p.id === patientId ? {...p, paymentStatus} : p));
+    if (paymentStatus === 'Paid') {
+      toast({
+        title: "Payment Confirmed",
+        description: `Payment for patient has been marked as paid.`,
+      });
+    }
   }
 
   const viewTitles: Record<View, string> = {
@@ -107,7 +118,7 @@ export function Dashboard() {
       case "overview":
         return <OverviewCards patients={patients} />;
       case "queue":
-        return <QueueManager patients={patients} addPatient={addPatient} updatePatientStatus={updatePatientStatus} updatePatientPriority={updatePatientPriority} doctors={mockDoctors} />;
+        return <QueueManager patients={patients} addPatient={addPatient} updatePatientStatus={updatePatientStatus} updatePatientPriority={updatePatientPriority} updatePatientPaymentStatus={updatePatientPaymentStatus} doctors={mockDoctors} />;
       case "appointments":
         return <AppointmentScheduler />;
       case "predictor":

@@ -27,17 +27,20 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { MoreHorizontal, ArrowUpDown, AlertTriangle, X } from "lucide-react";
-import type { Patient, PatientStatus, PatientPriority } from "@/lib/types";
+import type { Patient, PatientStatus, PatientPriority, PaymentStatus } from "@/lib/types";
 import { format } from "date-fns";
 import { mockDoctors } from "@/lib/data";
+import { Checkbox } from "../ui/checkbox";
+import { Label } from "../ui/label";
 
 type QueueTableProps = {
   patients: Patient[];
   onUpdateStatus: (patientId: number, status: PatientStatus) => void;
   onUpdatePriority: (patientId: number, priority: PatientPriority) => void;
+  onUpdatePaymentStatus: (patientId: number, status: PaymentStatus) => void;
 };
 
-export function QueueTable({ patients, onUpdateStatus, onUpdatePriority }: QueueTableProps) {
+export function QueueTable({ patients, onUpdateStatus, onUpdatePriority, onUpdatePaymentStatus }: QueueTableProps) {
   const [nameFilter, setNameFilter] = React.useState("");
   const [statusFilter, setStatusFilter] = React.useState<PatientStatus | "all">("all");
   const [doctorFilter, setDoctorFilter] = React.useState<string>("all");
@@ -161,6 +164,7 @@ export function QueueTable({ patients, onUpdateStatus, onUpdatePriority }: Queue
                   Arrival Time <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
               </TableHead>
+              <TableHead>Payment</TableHead>
               <TableHead>
                 <span className="sr-only">Actions</span>
               </TableHead>
@@ -187,6 +191,18 @@ export function QueueTable({ patients, onUpdateStatus, onUpdatePriority }: Queue
                 <TableCell className="whitespace-nowrap">{patient.doctor}</TableCell>
                 <TableCell className="whitespace-nowrap">
                   {format(patient.arrivalTime, "HH:mm")}
+                </TableCell>
+                <TableCell>
+                   <div className="flex items-center space-x-2">
+                    <Checkbox 
+                        id={`payment-${patient.id}`} 
+                        checked={patient.paymentStatus === 'Paid'} 
+                        onCheckedChange={(checked) => onUpdatePaymentStatus(patient.id, checked ? 'Paid' : 'Pending')}
+                    />
+                    <Label htmlFor={`payment-${patient.id}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      {patient.paymentStatus}
+                    </Label>
+                  </div>
                 </TableCell>
                 <TableCell>
                   <DropdownMenu>
