@@ -48,5 +48,5 @@ export const mockAppointments: Appointment[] = [
     { id: 1, patientName: 'Grace Lee', doctorName: 'Dr. Evelyn Reed', specialization: 'Cardiology', startTime: new Date(new Date().setDate(new Date().getDate() + 1)), status: 'Booked' },
     { id: 2, patientName: 'Henry Wilson', doctorName: 'Dr. Samuel Green', specialization: 'Pediatrics', startTime: new Date(new Date().setDate(new Date().getDate() + 1)), status: 'Booked' },
     { id: 3, patientName: 'Ivy Clark', doctorName: 'Dr. Olivia Blue', specialization: 'Dermatology', startTime: new Date(new Date().setDate(new Date().getDate() + 2)), status: 'Booked' },
-    { id: 4, patientName: 'Jack Turner', doctorName: 'Dr. Evelyn Reed', specialization: 'Cardiology', startTime: new Date(new Date().setDate(new Date().getDate() + 2)), status: 'Completed' },
+    { id: 4, patientName: 'Jack Turner', doctorName: 'Dr. Evelyn Reed', specialization: 'Cardiology', startTime: new Date(new Date().setDate(new Date().getDate() + 2)), status: 'Booked' },
 ];
