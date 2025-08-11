@@ -1,11 +1,11 @@
 import type { Patient, Doctor, Appointment } from '@/lib/types';
 
 export const mockPatients: Patient[] = [
-  { id: 1, name: 'Alice Johnson', queueNumber: 1, status: 'With Doctor', arrivalTime: new Date(new Date().setHours(9, 5)), doctor: 'Dr. Evelyn Reed' },
-  { id: 2, name: 'Bob Williams', queueNumber: 2, status: 'Waiting', arrivalTime: new Date(new Date().setHours(9, 15)), doctor: 'Dr. Samuel Green' },
-  { id: 3, name: 'Charlie Brown', queueNumber: 3, status: 'Waiting', arrivalTime: new Date(new Date().setHours(9, 30)), doctor: 'Dr. Evelyn Reed' },
-  { id: 4, name: 'Diana Miller', queueNumber: 4, status: 'Waiting', arrivalTime: new Date(new Date().setHours(9, 45)), doctor: 'Dr. Olivia Blue' },
-  { id: 5, name: 'Ethan Davis', queueNumber: 5, status: 'Completed', arrivalTime: new Date(new Date().setHours(8, 50)), doctor: 'Dr. Samuel Green' },
+  { id: 1, name: 'Alice Johnson', queueNumber: 1, status: 'With Doctor', arrivalTime: new Date(new Date().setHours(9, 5)), doctor: 'Dr. Evelyn Reed', priority: 'Normal' },
+  { id: 2, name: 'Bob Williams', queueNumber: 2, status: 'Waiting', arrivalTime: new Date(new Date().setHours(9, 15)), doctor: 'Dr. Samuel Green', priority: 'Normal' },
+  { id: 3, name: 'Charlie Brown', queueNumber: 3, status: 'Waiting', arrivalTime: new Date(new Date().setHours(9, 30)), doctor: 'Dr. Evelyn Reed', priority: 'Urgent' },
+  { id: 4, name: 'Diana Miller', queueNumber: 4, status: 'Waiting', arrivalTime: new Date(new Date().setHours(9, 45)), doctor: 'Dr. Olivia Blue', priority: 'Normal' },
+  { id: 5, name: 'Ethan Davis', queueNumber: 5, status: 'Completed', arrivalTime: new Date(new Date().setHours(8, 50)), doctor: 'Dr. Samuel Green', priority: 'Normal' },
 ];
 
 export const mockDoctors: Doctor[] = [

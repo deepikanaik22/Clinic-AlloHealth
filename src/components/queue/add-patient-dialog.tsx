@@ -13,13 +13,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import type { Doctor } from "@/lib/types";
+import type { Doctor, PatientPriority } from "@/lib/types";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { Checkbox } from "../ui/checkbox";
 
 type AddPatientDialogProps = {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
-  onAddPatient: (name: string, doctor: string) => void;
+  onAddPatient: (name: string, doctor: string, priority: PatientPriority) => void;
   doctors: Doctor[];
 };
 
@@ -31,18 +32,18 @@ export function AddPatientDialog({
 }: AddPatientDialogProps) {
   const [name, setName] = React.useState("");
   const [selectedDoctor, setSelectedDoctor] = React.useState<string>("");
+  const [isUrgent, setIsUrgent] = React.useState(false);
   const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (name.trim() && selectedDoctor) {
-      onAddPatient(name.trim(), selectedDoctor);
+      const priority: PatientPriority = isUrgent ? "Urgent" : "Normal";
+      onAddPatient(name.trim(), selectedDoctor, priority);
       toast({
         title: "Patient Added",
         description: `${name.trim()} has been added to the queue for ${selectedDoctor}.`,
       });
-      setName("");
-      setSelectedDoctor("");
       onOpenChange(false);
     } else {
       toast({
@@ -57,6 +58,7 @@ export function AddPatientDialog({
     if (!isOpen) {
       setName("");
       setSelectedDoctor("");
+      setIsUrgent(false);
     }
   }, [isOpen]);
 
@@ -96,6 +98,20 @@ export function AddPatientDialog({
                         ))}
                     </SelectContent>
                 </Select>
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="urgent" className="text-right">
+                Priority
+              </Label>
+               <div className="col-span-3 flex items-center space-x-2">
+                <Checkbox id="urgent" checked={isUrgent} onCheckedChange={(checked) => setIsUrgent(checked as boolean)} />
+                <label
+                  htmlFor="urgent"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Mark as Urgent
+                </label>
+              </div>
             </div>
           </div>
           <DialogFooter>

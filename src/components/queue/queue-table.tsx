@@ -15,22 +15,24 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import { MoreHorizontal, ArrowUpDown } from "lucide-react";
-import type { Patient, PatientStatus } from "@/lib/types";
+import { MoreHorizontal, ArrowUpDown, AlertTriangle } from "lucide-react";
+import type { Patient, PatientStatus, PatientPriority } from "@/lib/types";
 import { format } from "date-fns";
 
 type QueueTableProps = {
   patients: Patient[];
   onUpdateStatus: (patientId: number, status: PatientStatus) => void;
+  onUpdatePriority: (patientId: number, priority: PatientPriority) => void;
 };
 
-export function QueueTable({ patients, onUpdateStatus }: QueueTableProps) {
+export function QueueTable({ patients, onUpdateStatus, onUpdatePriority }: QueueTableProps) {
   const [filter, setFilter] = React.useState("");
-  const [sortBy, setSortBy] = React.useState<keyof Patient | null>(null);
-  const [sortOrder, setSortOrder] = React.useState<"asc" | "desc">("asc");
+  const [sortBy, setSortBy] = React.useState<keyof Patient | 'priority' | null>('priority');
+  const [sortOrder, setSortOrder] = React.useState<"asc" | "desc">("desc");
 
   const handleSort = (key: keyof Patient) => {
     if (sortBy === key) {
@@ -46,13 +48,18 @@ export function QueueTable({ patients, onUpdateStatus }: QueueTableProps) {
       p.name.toLowerCase().includes(filter.toLowerCase())
     );
 
-    if (sortBy) {
-      filtered.sort((a, b) => {
-        if (a[sortBy] < b[sortBy]) return sortOrder === "asc" ? -1 : 1;
-        if (a[sortBy] > b[sortBy]) return sortOrder === "asc" ? 1 : -1;
-        return 0;
-      });
-    }
+    // Default sort by priority (Urgent first), then by arrival time
+    filtered.sort((a, b) => {
+        if (a.priority === 'Urgent' && b.priority !== 'Urgent') return -1;
+        if (a.priority !== 'Urgent' && b.priority === 'Urgent') return 1;
+        
+        if (sortBy && sortBy !== 'priority') {
+            if (a[sortBy] < b[sortBy]) return sortOrder === 'asc' ? -1 : 1;
+            if (a[sortBy] > b[sortBy]) return sortOrder === 'asc' ? 1 : -1;
+        }
+
+        return a.arrivalTime.getTime() - b.arrivalTime.getTime();
+    });
 
     return filtered;
   }, [patients, filter, sortBy, sortOrder]);
@@ -117,11 +124,16 @@ export function QueueTable({ patients, onUpdateStatus }: QueueTableProps) {
           </TableHeader>
           <TableBody>
             {sortedPatients.map((patient) => (
-              <TableRow key={patient.id}>
+              <TableRow key={patient.id} data-state={patient.priority === 'Urgent' ? 'urgent' : ''} className="data-[state=urgent]:bg-destructive/10">
                 <TableCell className="font-medium">
                   {patient.queueNumber}
                 </TableCell>
-                <TableCell>{patient.name}</TableCell>
+                <TableCell className="font-medium">
+                  <div className="flex items-center gap-2">
+                     {patient.priority === 'Urgent' && <AlertTriangle className="h-4 w-4 text-destructive" />}
+                    {patient.name}
+                  </div>
+                </TableCell>
                 <TableCell>
                   <Badge variant={getStatusVariant(patient.status)} className="flex items-center gap-2">
                     <span className={`h-2 w-2 rounded-full ${getStatusDotColor(patient.status)}`}></span>
@@ -141,7 +153,7 @@ export function QueueTable({ patients, onUpdateStatus }: QueueTableProps) {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                      <DropdownMenuLabel>Change Status</DropdownMenuLabel>
                       {(["Waiting", "With Doctor", "Completed", "Cancelled"] as PatientStatus[]).map(status => (
                         <DropdownMenuItem
                             key={status}
@@ -150,6 +162,14 @@ export function QueueTable({ patients, onUpdateStatus }: QueueTableProps) {
                             Mark as {status}
                         </DropdownMenuItem>
                       ))}
+                       <DropdownMenuSeparator />
+                       <DropdownMenuLabel>Change Priority</DropdownMenuLabel>
+                       <DropdownMenuItem onClick={() => onUpdatePriority(patient.id, 'Urgent')} disabled={patient.priority === 'Urgent'}>
+                        Set as Urgent
+                      </DropdownMenuItem>
+                       <DropdownMenuItem onClick={() => onUpdatePriority(patient.id, 'Normal')} disabled={patient.priority === 'Normal'}>
+                        Set to Normal
+                      </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>

@@ -46,7 +46,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "../ui/button";
 import { mockPatients, mockDoctors } from "@/lib/data";
-import type { Patient } from "@/lib/types";
+import type { Patient, PatientPriority } from "@/lib/types";
 
 type View =
   | "overview"
@@ -63,7 +63,7 @@ export function Dashboard() {
   const { toast } = useToast();
   const [patients, setPatients] = React.useState<Patient[]>(mockPatients);
   
-  const addPatient = (name: string, doctor: string) => {
+  const addPatient = (name: string, doctor: string, priority: PatientPriority) => {
     const newPatient: Patient = {
       id: patients.length + 1,
       name,
@@ -71,13 +71,22 @@ export function Dashboard() {
       status: "Waiting",
       arrivalTime: new Date(),
       doctor,
+      priority,
     };
-    setPatients((prev) => [newPatient, ...prev]);
+    setPatients((prev) => [...prev, newPatient]);
   };
   
   const updatePatientStatus = (patientId: number, status: Patient['status']) => {
     setPatients(prev => prev.map(p => p.id === patientId ? {...p, status} : p));
   };
+  
+  const updatePatientPriority = (patientId: number, priority: PatientPriority) => {
+    setPatients(prev => prev.map(p => p.id === patientId ? {...p, priority} : p));
+     toast({
+      title: "Priority Updated",
+      description: `Patient's priority has been set to ${priority}.`,
+    });
+  }
 
   const viewTitles: Record<View, string> = {
     overview: "Dashboard Overview",
@@ -94,7 +103,7 @@ export function Dashboard() {
       case "overview":
         return <OverviewCards patients={patients} />;
       case "queue":
-        return <QueueManager patients={patients} addPatient={addPatient} updatePatientStatus={updatePatientStatus} doctors={mockDoctors} />;
+        return <QueueManager patients={patients} addPatient={addPatient} updatePatientStatus={updatePatientStatus} updatePatientPriority={updatePatientPriority} doctors={mockDoctors} />;
       case "appointments":
         return <AppointmentScheduler />;
       case "predictor":
