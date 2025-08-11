@@ -18,10 +18,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { MoreHorizontal, ArrowUpDown, AlertTriangle } from "lucide-react";
+import { MoreHorizontal, ArrowUpDown, AlertTriangle, X } from "lucide-react";
 import type { Patient, PatientStatus, PatientPriority } from "@/lib/types";
 import { format } from "date-fns";
+import { mockDoctors } from "@/lib/data";
 
 type QueueTableProps = {
   patients: Patient[];
@@ -30,7 +38,9 @@ type QueueTableProps = {
 };
 
 export function QueueTable({ patients, onUpdateStatus, onUpdatePriority }: QueueTableProps) {
-  const [filter, setFilter] = React.useState("");
+  const [nameFilter, setNameFilter] = React.useState("");
+  const [statusFilter, setStatusFilter] = React.useState<PatientStatus | "all">("all");
+  const [doctorFilter, setDoctorFilter] = React.useState<string>("all");
   const [sortBy, setSortBy] = React.useState<keyof Patient | 'priority' | null>('priority');
   const [sortOrder, setSortOrder] = React.useState<"asc" | "desc">("desc");
 
@@ -44,9 +54,10 @@ export function QueueTable({ patients, onUpdateStatus, onUpdatePriority }: Queue
   };
 
   const sortedPatients = React.useMemo(() => {
-    let filtered = patients.filter((p) =>
-      p.name.toLowerCase().includes(filter.toLowerCase())
-    );
+    let filtered = patients
+      .filter((p) => p.name.toLowerCase().includes(nameFilter.toLowerCase()))
+      .filter((p) => statusFilter === 'all' || p.status === statusFilter)
+      .filter((p) => doctorFilter === 'all' || p.doctor === doctorFilter);
 
     // Default sort by priority (Urgent first), then by arrival time
     filtered.sort((a, b) => {
@@ -62,7 +73,7 @@ export function QueueTable({ patients, onUpdateStatus, onUpdatePriority }: Queue
     });
 
     return filtered;
-  }, [patients, filter, sortBy, sortOrder]);
+  }, [patients, nameFilter, statusFilter, doctorFilter, sortBy, sortOrder]);
 
   const getStatusVariant = (status: PatientStatus) => {
     switch (status) {
@@ -86,15 +97,48 @@ export function QueueTable({ patients, onUpdateStatus, onUpdatePriority }: Queue
     }
   }
 
+  const resetFilters = () => {
+    setNameFilter("");
+    setStatusFilter("all");
+    setDoctorFilter("all");
+  }
+
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
+      <div className="flex flex-wrap items-center gap-4 py-4">
         <Input
           placeholder="Filter by patient name..."
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
+          value={nameFilter}
+          onChange={(e) => setNameFilter(e.target.value)}
           className="max-w-sm"
         />
+        <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value as PatientStatus | 'all')}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Filter by status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Statuses</SelectItem>
+            <SelectItem value="Waiting">Waiting</SelectItem>
+            <SelectItem value="With Doctor">With Doctor</SelectItem>
+            <SelectItem value="Completed">Completed</SelectItem>
+            <SelectItem value="Cancelled">Cancelled</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select value={doctorFilter} onValueChange={setDoctorFilter}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Filter by doctor" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Doctors</SelectItem>
+            {mockDoctors.map(doctor => (
+              <SelectItem key={doctor.id} value={doctor.name}>{doctor.name}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+         <Button variant="ghost" onClick={resetFilters} className="h-8 px-2 lg:px-3">
+            Reset
+            <X className="ml-2 h-4 w-4" />
+          </Button>
       </div>
       <div className="rounded-md border">
         <Table>
