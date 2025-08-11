@@ -16,6 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { BookingDialog } from "./booking-dialog";
 import { useToast } from "@/hooks/use-toast";
+import { format } from "date-fns";
 
 export function AppointmentScheduler() {
   const [appointments, setAppointments] = React.useState<Appointment[]>(mockAppointments);
@@ -35,6 +36,11 @@ export function AppointmentScheduler() {
       description: `Appointment for ${appointment.patientName} with ${appointment.doctorName} has been booked.`,
     });
   };
+  
+  const isDoctorAvailable = (doctor: Doctor) => {
+    const today = format(new Date(), "EEEE"); // e.g., "Monday"
+    return doctor.availability.some(day => day.day === today);
+  }
 
   return (
     <div className="grid gap-6 md:grid-cols-3">
@@ -53,7 +59,13 @@ export function AppointmentScheduler() {
                         <AvatarFallback>{doctor.name.charAt(3).toUpperCase()}{doctor.name.charAt(4).toUpperCase()}</AvatarFallback>
                     </Avatar>
                     <div className="space-y-1">
-                        <p className="font-semibold">{doctor.name}</p>
+                        <div className="flex items-center gap-2">
+                            <p className="font-semibold">{doctor.name}</p>
+                            <Badge variant={isDoctorAvailable(doctor) ? 'default' : 'secondary'} className="text-xs">
+                                {isDoctorAvailable(doctor) ? "Available" : "Unavailable"}
+                            </Badge>
+                        </div>
+
                         <Badge variant="secondary">{doctor.specialization}</Badge>
                          <Button
                             size="sm"
