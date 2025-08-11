@@ -10,6 +10,7 @@ import {
   Settings,
   Award,
   BookHeart,
+  LineChart,
 } from "lucide-react";
 import {
   SidebarProvider,
@@ -32,6 +33,7 @@ import { WaitTimePredictor } from "../wait-time/wait-time-predictor";
 import { DoctorRankings } from "../rankings/doctor-rankings";
 import { HealthFeed } from "../health-feed/health-feed";
 import { SettingsPage } from "../settings/settings-page";
+import { AnalyticsPage } from "../analytics/analytics-page";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -45,7 +47,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "../ui/button";
-import { mockPatients, mockDoctors } from "@/lib/data";
+import { mockPatients, mockDoctors, mockAppointments } from "@/lib/data";
 import type { Patient, PatientPriority } from "@/lib/types";
 
 type View =
@@ -55,7 +57,8 @@ type View =
   | "predictor"
   | "rankings"
   | "feed"
-  | "settings";
+  | "settings"
+  | "analytics";
 
 export function Dashboard() {
   const [activeView, setActiveView] = React.useState<View>("overview");
@@ -96,6 +99,7 @@ export function Dashboard() {
     rankings: "Doctor Rankings",
     feed: "Today's Health Feed",
     settings: "Settings",
+    analytics: "Clinic Analytics",
   };
 
   const renderView = () => {
@@ -112,6 +116,8 @@ export function Dashboard() {
         return <DoctorRankings />;
       case "feed":
         return <HealthFeed />;
+      case "analytics":
+        return <AnalyticsPage patients={patients} doctors={mockDoctors} appointments={mockAppointments} />;
       case "settings":
         return <SettingsPage />;
       default:
@@ -184,6 +190,16 @@ export function Dashboard() {
               >
                 <CalendarDays />
                 <span>Appointments</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+             <SidebarMenuItem>
+              <SidebarMenuButton
+                onClick={() => setActiveView("analytics")}
+                isActive={activeView === "analytics"}
+                tooltip="Analytics"
+              >
+                <LineChart />
+                <span>Analytics</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
