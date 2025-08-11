@@ -150,7 +150,7 @@ export function Dashboard() {
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton
-                onClick={() => setActiveVew("feed")}
+                onClick={() => setActiveView("feed")}
                 isActive={activeView === "feed"}
                 tooltip="Health Feed"
               >
