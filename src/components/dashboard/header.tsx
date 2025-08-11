@@ -31,10 +31,10 @@ export function DashboardHeader({ title }: DashboardHeaderProps) {
   };
 
   return (
-    <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background/50 backdrop-blur-md px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+    <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background/50 px-4 backdrop-blur-md sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
       <SidebarTrigger className="md:hidden" />
-      <h1 className="text-lg font-semibold md:text-2xl">{title}</h1>
-      <div className="ml-auto flex items-center gap-2">
+      <h1 className="flex-1 text-lg font-semibold md:text-2xl">{title}</h1>
+      <div className="flex items-center gap-2">
         <AlertDialog open={isSosDialogOpen} onOpenChange={setIsSosDialogOpen}>
           <AlertDialogTrigger asChild>
             <Button variant="destructive" size="icon" className="h-8 w-8">

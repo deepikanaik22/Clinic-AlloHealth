@@ -113,7 +113,7 @@ export function QueueTable({ patients, onUpdateStatus, onUpdatePriority }: Queue
           className="max-w-sm"
         />
         <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value as PatientStatus | 'all')}>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-full md:w-[180px]">
             <SelectValue placeholder="Filter by status" />
           </SelectTrigger>
           <SelectContent>
@@ -125,7 +125,7 @@ export function QueueTable({ patients, onUpdateStatus, onUpdatePriority }: Queue
           </SelectContent>
         </Select>
         <Select value={doctorFilter} onValueChange={setDoctorFilter}>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-full md:w-[180px]">
             <SelectValue placeholder="Filter by doctor" />
           </SelectTrigger>
           <SelectContent>
@@ -140,7 +140,7 @@ export function QueueTable({ patients, onUpdateStatus, onUpdatePriority }: Queue
             <X className="ml-2 h-4 w-4" />
           </Button>
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-md border overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
@@ -172,20 +172,20 @@ export function QueueTable({ patients, onUpdateStatus, onUpdatePriority }: Queue
                 <TableCell className="font-medium">
                   {patient.queueNumber}
                 </TableCell>
-                <TableCell className="font-medium">
+                <TableCell className="font-medium whitespace-nowrap">
                   <div className="flex items-center gap-2">
                      {patient.priority === 'Urgent' && <AlertTriangle className="h-4 w-4 text-destructive" />}
                     {patient.name}
                   </div>
                 </TableCell>
                 <TableCell>
-                  <Badge variant={getStatusVariant(patient.status)} className="flex items-center gap-2">
+                  <Badge variant={getStatusVariant(patient.status)} className="flex items-center gap-2 whitespace-nowrap">
                     <span className={`h-2 w-2 rounded-full ${getStatusDotColor(patient.status)}`}></span>
                     {patient.status}
                   </Badge>
                 </TableCell>
-                <TableCell>{patient.doctor}</TableCell>
-                <TableCell>
+                <TableCell className="whitespace-nowrap">{patient.doctor}</TableCell>
+                <TableCell className="whitespace-nowrap">
                   {format(patient.arrivalTime, "HH:mm")}
                 </TableCell>
                 <TableCell>
