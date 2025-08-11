@@ -172,7 +172,7 @@ export function Dashboard() {
           </div>
         </SidebarHeader>
         <SidebarContent>
-          <SidebarMenu>
+          <SidebarMenu className="flex-1">
             <SidebarMenuItem>
               <SidebarMenuButton
                 onClick={() => setActiveView("overview")}
@@ -244,59 +244,59 @@ export function Dashboard() {
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
-        </SidebarContent>
-        <SidebarFooter>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                tooltip="Settings"
-                onClick={() => setActiveView("settings")}
-                isActive={activeView === "settings"}
-              >
-                <Settings />
-                <span>Settings</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <SidebarMenuButton>
-                    <div className="flex w-full items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Avatar className="h-7 w-7">
-                          <AvatarImage
-                            src="https://placehold.co/40x40.png"
-                            alt="User"
-                            data-ai-hint="woman smiling"
-                          />
-                          <AvatarFallback>FD</AvatarFallback>
-                        </Avatar>
-                        <span className="text-sm font-medium">Front Desk</span>
+           <SidebarFooter>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  tooltip="Settings"
+                  onClick={() => setActiveView("settings")}
+                  isActive={activeView === "settings"}
+                >
+                  <Settings />
+                  <span>Settings</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <SidebarMenuButton>
+                      <div className="flex w-full items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Avatar className="h-7 w-7">
+                            <AvatarImage
+                              src="https://placehold.co/40x40.png"
+                              alt="User"
+                              data-ai-hint="woman smiling"
+                            />
+                            <AvatarFallback>FD</AvatarFallback>
+                          </Avatar>
+                          <span className="text-sm font-medium">Front Desk</span>
+                        </div>
+                        <LogOut className="size-4" />
                       </div>
-                      <LogOut className="size-4" />
-                    </div>
-                  </SidebarMenuButton>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you sure you want to log out?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      You will be returned to the login page.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleLogout}>
-                      Log Out
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarFooter>
+                    </SidebarMenuButton>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you sure you want to log out?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        You will be returned to the login page.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={handleLogout}>
+                        Log Out
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarFooter>
+        </SidebarContent>
       </Sidebar>
       <SidebarInset>
         <DashboardHeader title={viewTitles[activeView]} />
