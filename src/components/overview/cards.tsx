@@ -7,15 +7,20 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Users, CalendarCheck, Stethoscope, Clock, Smile, Star } from "lucide-react";
-import { mockPatients, mockAppointments, mockDoctors } from "@/lib/data";
+import { mockAppointments, mockDoctors } from "@/lib/data";
 import { Button } from "../ui/button";
 import * as React from "react";
 import { FeedbackDialog } from "./feedback-dialog";
+import type { Patient } from "@/lib/types";
 
-export function OverviewCards() {
+type OverviewCardsProps = {
+  patients: Patient[];
+};
+
+export function OverviewCards({ patients }: OverviewCardsProps) {
   const [isFeedbackDialogOpen, setIsFeedbackDialogOpen] = React.useState(false);
 
-  const patientsInQueue = mockPatients.filter(
+  const patientsInQueue = patients.filter(
     (p) => p.status === "Waiting" || p.status === "With Doctor"
   ).length;
   

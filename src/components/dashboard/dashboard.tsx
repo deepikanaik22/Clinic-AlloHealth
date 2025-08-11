@@ -45,6 +45,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "../ui/button";
+import { mockPatients } from "@/lib/data";
+import type { Patient } from "@/lib/types";
 
 type View =
   | "overview"
@@ -59,6 +61,23 @@ export function Dashboard() {
   const [activeView, setActiveView] = React.useState<View>("overview");
   const [isLoggedIn, setIsLoggedIn] = React.useState(true);
   const { toast } = useToast();
+  const [patients, setPatients] = React.useState<Patient[]>(mockPatients);
+  
+  const addPatient = (name: string) => {
+    const newPatient: Patient = {
+      id: patients.length + 1,
+      name,
+      queueNumber: Math.max(...patients.map(p => p.queueNumber), 0) + 1,
+      status: "Waiting",
+      arrivalTime: new Date(),
+      doctor: "Unassigned",
+    };
+    setPatients((prev) => [newPatient, ...prev]);
+  };
+  
+  const updatePatientStatus = (patientId: number, status: Patient['status']) => {
+    setPatients(prev => prev.map(p => p.id === patientId ? {...p, status} : p));
+  };
 
   const viewTitles: Record<View, string> = {
     overview: "Dashboard Overview",
@@ -73,9 +92,9 @@ export function Dashboard() {
   const renderView = () => {
     switch (activeView) {
       case "overview":
-        return <OverviewCards />;
+        return <OverviewCards patients={patients} />;
       case "queue":
-        return <QueueManager />;
+        return <QueueManager patients={patients} addPatient={addPatient} updatePatientStatus={updatePatientStatus} />;
       case "appointments":
         return <AppointmentScheduler />;
       case "predictor":
@@ -87,7 +106,7 @@ export function Dashboard() {
       case "settings":
         return <SettingsPage />;
       default:
-        return <OverviewCards />;
+        return <OverviewCards patients={patients} />;
     }
   };
 
