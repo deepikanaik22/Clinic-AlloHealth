@@ -44,6 +44,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
+import { Button } from "../ui/button";
 
 type View =
   | "overview"
@@ -56,6 +57,7 @@ type View =
 
 export function Dashboard() {
   const [activeView, setActiveView] = React.useState<View>("overview");
+  const [isLoggedIn, setIsLoggedIn] = React.useState(true);
   const { toast } = useToast();
 
   const viewTitles: Record<View, string> = {
@@ -90,13 +92,30 @@ export function Dashboard() {
   };
 
   const handleLogout = () => {
-    // In a real app, this would handle the logout logic (e.g., clearing session, redirecting).
     console.log("User logged out.");
     toast({
       title: "Logged Out",
       description: "You have been successfully logged out.",
     });
+    setIsLoggedIn(false);
   };
+  
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+    setActiveView("overview");
+  }
+
+  if (!isLoggedIn) {
+    return (
+      <div className="flex h-screen w-full flex-col items-center justify-center bg-background text-foreground">
+        <div className="text-center space-y-4">
+          <h1 className="text-3xl font-bold">You have been logged out.</h1>
+          <p className="text-muted-foreground">Thank you for using ClinicFlow.</p>
+          <Button onClick={handleLogin}>Log Back In</Button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <SidebarProvider>
