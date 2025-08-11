@@ -32,7 +32,7 @@ export function OverviewCards() {
   return (
     <>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="transition-transform duration-200 ease-in-out hover:scale-105">
+        <Card className="transition-transform duration-200 ease-in-out hover:scale-105 hover:shadow-md">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Patients in Queue
@@ -46,7 +46,7 @@ export function OverviewCards() {
             </p>
           </CardContent>
         </Card>
-        <Card className="transition-transform duration-200 ease-in-out hover:scale-105">
+        <Card className="transition-transform duration-200 ease-in-out hover:scale-105 hover:shadow-md">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Appointments Today
@@ -60,7 +60,7 @@ export function OverviewCards() {
             </p>
           </CardContent>
         </Card>
-        <Card className="transition-transform duration-200 ease-in-out hover:scale-105">
+        <Card className="transition-transform duration-200 ease-in-out hover:scale-105 hover:shadow-md">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Available Doctors
@@ -74,7 +74,7 @@ export function OverviewCards() {
             </p>
           </CardContent>
         </Card>
-        <Card className="transition-transform duration-200 ease-in-out hover:scale-105">
+        <Card className="transition-transform duration-200 ease-in-out hover:scale-105 hover:shadow-md">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Average Wait Time</CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground" />
@@ -86,7 +86,7 @@ export function OverviewCards() {
             </p>
           </CardContent>
         </Card>
-        <Card className="transition-transform duration-200 ease-in-out hover:scale-105">
+        <Card className="transition-transform duration-200 ease-in-out hover:scale-105 hover:shadow-md">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Patient Satisfaction</CardTitle>
             <Smile className="h-4 w-4 text-muted-foreground" />
@@ -98,7 +98,7 @@ export function OverviewCards() {
             </p>
           </CardContent>
         </Card>
-        <Card className="transition-transform duration-200 ease-in-out hover:scale-105">
+        <Card className="transition-transform duration-200 ease-in-out hover:scale-105 hover:shadow-md">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Feedback</CardTitle>
             <Star className="h-4 w-4 text-muted-foreground" />
